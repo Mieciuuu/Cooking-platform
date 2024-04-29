@@ -1,0 +1,27 @@
+.Header {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  text-align: left;
+  background-color: purple;
+  color: white;
+  padding: 1%;
+  max-height: 15%;
+}
+
+#serviceName {
+  display: inline-block;
+  font-size: large;
+  font-weight: bold;
+  padding-left: 1%;
+}
+
+.headerButton {
+  margin-right: 1%;
+  padding: 1.4%;
+  float: right;
+}
+
+#loginButton {
+  margin-right: 2%;
+}

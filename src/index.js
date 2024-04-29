@@ -1,11 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import WelcomePage from './WelcomePage';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const root = document.getElementById('root');
+
+function Root() {
+  const [loggedIn, setLoggedIn] = useState();
+  return <WelcomePage loggedIn={loggedIn} setLoggedIn={setLoggedIn} />;
+}
+
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <Root />
+  </React.StrictMode>,
+  root
 );

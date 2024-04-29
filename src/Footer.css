@@ -1,0 +1,12 @@
+.Footer {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  text-align: right;
+  background-color: purple;
+  color: white;
+}
+
+#footerText {
+  margin-right: 1%;
+}

@@ -1,0 +1,29 @@
+.WelcomePage {
+  position: relative;
+  text-align: center;
+  margin-top: 10%;
+  color: white;
+}
+
+#frontImage {
+  grid-column: 1;
+  grid-row: 1;
+  width: 600px;
+  display: inline-block;
+}
+
+#frontPagePicture {
+  display: grid;
+  padding-left: 2%;
+  width: 92%;
+  white-space: normal;
+  display: flex;
+}
+
+.frontTD {
+  padding-left: 2%;
+}
+
+#welcomeText {
+  font-size: 30px;
+}
