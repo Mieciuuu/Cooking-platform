@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import Footer from './Footer';
 import RecipeSearchPage from './RecipeSearchPage';
 import LoggedInHeader from './LoggedInHeader';
-import WelcomePage from './WelcomePage';
+import RecipeManagePage from './RecipeManagePage';
+import './LoggedInPage.css';
 
-function LoggedInPage({ setLoggedIn }) {
+function LoggedInPage({ setLoggedIn, userId }) {
   const [showManagingPage, setManagingPage] = useState(false);
   const [showHomePage, setHomePage] = useState(true);
 
   return (
     <div>
       <LoggedInHeader onHomePageToggle={setHomePage} onManagePageToggle={setManagingPage} setLoggedIn={setLoggedIn}/>
-      <div className="LoggedInPage">
-        {showManagingPage && <WelcomePage loggedIn={true} setLoggedIn={setLoggedIn} />}
+      <div className="LoggedInPage" id='loggedInPage'>
+        {showManagingPage && <RecipeManagePage userId={userId} />}
         {showHomePage && <RecipeSearchPage />}
       </div>
       <Footer/>

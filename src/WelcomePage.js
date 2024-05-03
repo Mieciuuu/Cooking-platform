@@ -8,10 +8,11 @@ import RecipeSearchPage from './RecipeSearchPage';
 import image from './letHimCook.jpg';
 import LoggedInPage from './LoggedInPage';
 
-function WelcomePage({ loggedIn, setLoggedIn }) { // Destructure props object
+function WelcomePage({ loggedIn, setLoggedIn }) {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showRecipePage, setShowRecipePage] = useState(false);
+  const [userId, setUserId] = useState();
 
   const redirectLoginPage = () => {
     setShowLoginForm(true);
@@ -37,9 +38,8 @@ function WelcomePage({ loggedIn, setLoggedIn }) { // Destructure props object
     setShowRecipePage(false);
   };
 
-  console.log("X kurwa D");
   if (loggedIn) {
-    return <LoggedInPage setLoggedIn={setLoggedIn} />;
+    return <LoggedInPage setLoggedIn={setLoggedIn} userId={userId} />;
   } else {
     return (
       <div>
@@ -47,7 +47,7 @@ function WelcomePage({ loggedIn, setLoggedIn }) { // Destructure props object
         <div className="WelcomePage">
           {!showLoginForm && !showRegisterForm && !showRecipePage && <WelcomePageTrue />}
           {showRecipePage && <RecipeSearchPage />}
-          {showLoginForm && <LoginForm setLoggedIn={setLoggedIn} />}
+          {showLoginForm && <LoginForm setLoggedIn={setLoggedIn} setUserId={setUserId} />}
           {showRegisterForm && <RegistrationForm />}
         </div>
         <Footer />

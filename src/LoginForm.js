@@ -2,7 +2,7 @@ import React from 'react';
 import './LoginRegister.css';
 import axios from 'axios';
 
-async function handleLogin(event, setLoggedIn) {
+async function handleLogin(event, setLoggedIn, setUserId) {
   event.preventDefault();
   const formData = new FormData(event.target);
 
@@ -13,7 +13,8 @@ async function handleLogin(event, setLoggedIn) {
 
     document.getElementById('confirmationText').innerHTML = response.data.b;
 
-    if (response.data.a) {
+    if (response.data.a > 0) {
+      setUserId(response.data.a)
       setLoggedIn(true);
     }
   } catch (error) {
@@ -22,11 +23,11 @@ async function handleLogin(event, setLoggedIn) {
 }
 
 
-function LoginForm({ setLoggedIn }) {
+function LoginForm({ setLoggedIn, setUserId }) {
   return (
     <div>
       <h1 className='formTitle'>Logowanie</h1>
-      <form className="loginRegisterForm" onSubmit={(e) => handleLogin(e, setLoggedIn)}>
+      <form className="loginRegisterForm" onSubmit={(e) => handleLogin(e, setLoggedIn, setUserId)}>
         <table>
           <tbody>
             <tr>

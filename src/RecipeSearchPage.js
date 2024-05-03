@@ -1,53 +1,70 @@
+import React, { useState, useEffect } from 'react';
+import RecipePage from './RecipePage';
 import './RecipeSearchPage.css';
 
-import React, { useState } from 'react';
-
 const RecipeSearchPage = () => {
-  // State to hold the search query
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // State to hold the list of recipes (dummy data for demonstration)
-  const [recipes, setRecipes] = useState([
-    { id: 1, name: 'Pasta Carbonara', ingredients: ['pasta', 'eggs', 'bacon', 'cheese'] },
-    { id: 2, name: 'Chicken Curry', ingredients: ['chicken', 'curry paste', 'coconut milk', 'vegetables'] },
-    // Add more dummy recipes as needed
-  ]);
+  const [recipes, setRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+  const [selectedRecipeId, setSelectedRecipeId] = useState(null);
 
-  // Function to handle search input change
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/recipes');
+        if (!response.ok) {
+          throw new Error('Failed to fetch recipes');
+        }
+        const data = await response.json();
+        setRecipes(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
+    fetchRecipes();
+  }, []);
+
+  useEffect(() => {
+    const updatedFilteredRecipes = recipes.filter(recipe =>
+      recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredRecipes(updatedFilteredRecipes);
+  }, [searchQuery, recipes]);
+
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Function to filter recipes based on search query
-  const filteredRecipes = recipes.filter(recipe =>
-    recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const goChosenRecipe = (recipeId) => {
+    setSelectedRecipeId(recipeId);
+  };
+
+  const handleBackButtonClick = () => {
+    setSelectedRecipeId(null);
+  };
 
   return (
     <div className="RecipeSearchPage">
-      <h2>Search Recipes</h2>
-      {/* Search input field */}
-      <input
-        type="text"
-        placeholder="Search recipes..."
-        value={searchQuery}
-        onChange={handleSearchInputChange}
-      />
-      {/* Display filtered recipes */}
-      <div className="recipes-list">
-        {filteredRecipes.map(recipe => (
-          <div key={recipe.id} className="recipe">
-            <a href={`/recipe/${recipe.id}`}>
-              <h3>{recipe.name}</h3>
-            </a>
-            <ul>
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
+      {!selectedRecipeId && (
+        <>
+          <h2>Search Recipes</h2>
+          <input
+            type="text"
+            placeholder="Search recipes..."
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+          />
+          <div id="recipes-list">
+            {filteredRecipes.map(recipe => (
+              <div key={recipe.id} className="recipe">
+                <p onClick={() => goChosenRecipe(recipe.id)}>{recipe.name}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+      {selectedRecipeId && <RecipePage recipeId={selectedRecipeId} onBackButtonClick={handleBackButtonClick} />}
     </div>
   );
 };

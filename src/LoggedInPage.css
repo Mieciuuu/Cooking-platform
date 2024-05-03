@@ -1,0 +1,11 @@
+.LoggedInPage {
+  position: relative;
+  text-align: center;
+  margin-top: 10%;
+  color: white;
+  margin-bottom: 5%;
+}
+
+.frontTD {
+  padding-left: 2%;
+}

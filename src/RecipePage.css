@@ -1,0 +1,12 @@
+#Recipe {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  border-width: 5px;
+  border-style: ridge;
+}
+
+.recipeViewSegment {
+  border-width: 5px;
+  border-style: ridge;
+}
