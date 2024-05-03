@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './RecipeManagePage.css';
 
+/**
+ * Component for managing user recipes.
+ * 
+ * @param {Object} props - Props object containing the user ID.
+ * @param {number} props.userId - The ID of the logged-in user.
+ * @returns {JSX.Element} Recipe management page component.
+ */
 const RecipeManagePage = ({ userId }) => {
   const [userRecipes, setUserRecipes] = useState([]);
   const [addRecipe, setAddRecipe] = useState(false);
@@ -9,9 +16,12 @@ const RecipeManagePage = ({ userId }) => {
   const [recipeScore, setRecipeScore] = useState(0.0);
   const [recipeToModify, setRecipeToModify] = useState();
 
+  /**
+   * Fetches the recipes associated with the current user.
+   */
   const fetchUserRecipes = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/userRecipes/${userId}`);
+      const response = await fetch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/userRecipes/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch recipes');
       }
@@ -22,10 +32,15 @@ const RecipeManagePage = ({ userId }) => {
     }
   };
 
+  /**
+   * Fetches the details of a recipe to modify.
+   * 
+   * @param {number} modifyRecipeId - The ID of the recipe to modify.
+   */
   const fetchRecipe = async (modifyRecipeId) => {
     try {
-      const response = await fetch(`http://localhost:8080/recipes/${modifyRecipeId}`);
-      const responseScore = await axios.get(`http://localhost:8080/ratings/${modifyRecipeId}`);
+      const response = await fetch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/recipes/${modifyRecipeId}`);
+      const responseScore = await axios.get(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/ratings/${modifyRecipeId}`);
       if (!response.ok || responseScore.status !== 200) {
         throw new Error('Failed to fetch recipe');
       }
@@ -42,11 +57,20 @@ const RecipeManagePage = ({ userId }) => {
     fetchUserRecipes();
   }, []);
 
+  /**
+   * Toggles the form for adding a new recipe.
+   */
   const addRecipeTogle = () => {
     setAddRecipe(true);
     setModifyRecipe(false);
   }
 
+  /**
+   * Handles the submission of the recipe addition form.
+   * 
+   * @param {Event} formRequest - The form submission event.
+   * @param {number} userId - The ID of the logged-in user.
+   */
   const handleRecipeAdd = async (formRequest, userId) => {
     formRequest.preventDefault()
     const formData = new FormData(formRequest.target);
@@ -58,13 +82,19 @@ const RecipeManagePage = ({ userId }) => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/addRecipe', newRecipe);
+      const response = await axios.post('https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/addRecipe', newRecipe);
       document.getElementById('confText').innerHTML = "Dodano przepis '" + response.data.name + "'";
     } catch (error) {
       console.log(error);
     }
   }
 
+  /**
+   * Handles the submission of the recipe modification form.
+   * 
+   * @param {Event} formRequest - The form submission event.
+   * @param {number} recipeId - The ID of the recipe to modify.
+   */
   const handleRecipeModify = async (formRequest, recipeId) => {
     formRequest.preventDefault()
     const formData = new FormData(formRequest.target);
@@ -75,16 +105,21 @@ const RecipeManagePage = ({ userId }) => {
     };
 
     try {
-      const response = await axios.patch(`http://localhost:8080/modifyRecipe/${recipeId}`, newRecipe);
+      const response = await axios.patch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/modifyRecipe/${recipeId}`, newRecipe);
       document.getElementById('confText').innerHTML = response.data;
     } catch (error) {
       console.log(error);
     }
   }
 
+  /**
+   * Deletes a recipe.
+   * 
+   * @param {number} recipeIdToDelete - The ID of the recipe to delete.
+   */
   const deleteRecipe = async (recipeIdToDelete) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/deleteRecipe/${recipeIdToDelete}`);
+      const response = await axios.delete(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/deleteRecipe/${recipeIdToDelete}`);
       document.getElementById('confText').innerHTML = response.data;
       fetchUserRecipes();
     } catch (error) {
@@ -92,6 +127,11 @@ const RecipeManagePage = ({ userId }) => {
     }
   }
 
+  /**
+   * Updates the recipe details in the state based on user input.
+   * 
+   * @param {Event} e - The input change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setRecipeToModify(prevState => ({
@@ -130,8 +170,7 @@ const RecipeManagePage = ({ userId }) => {
           </tbody>
         </form>
         <p id='confText'></p>
-    </div>
-
+      </div>
     );
   } else {
     return (
@@ -141,7 +180,7 @@ const RecipeManagePage = ({ userId }) => {
           <tr><td colSpan={3}><button onClick={addRecipeTogle}>Dodaj przepis</button></td></tr>
           <br/>
           {userRecipes.map(recipe => (
-            <tr><td>{recipe.name}</td><td><button onClick={() => fetchRecipe(recipe.id)}>Modyfikuj przepis</button></td><td><button onClick={() => deleteRecipe(recipe.id)}>Usuń przepis</button></td></tr>
+            <tr key={recipe.id}><td>{recipe.name}</td><td><button onClick={() => fetchRecipe(recipe.id)}>Modyfikuj przepis</button></td><td><button onClick={() => deleteRecipe(recipe.id)}>Usuń przepis</button></td></tr>
           ))}
         </tbody></table>
       </div>
