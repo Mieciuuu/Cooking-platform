@@ -9,12 +9,13 @@ function LoggedInPage({ setLoggedIn, userId }) {
   const [showManagingPage, setManagingPage] = useState(false);
   const [showHomePage, setHomePage] = useState(true);
 
+  console.log(userId);
   return (
     <div>
       <LoggedInHeader onHomePageToggle={setHomePage} onManagePageToggle={setManagingPage} setLoggedIn={setLoggedIn}/>
       <div className="LoggedInPage" id='loggedInPage'>
         {showManagingPage && <RecipeManagePage userId={userId} />}
-        {showHomePage && <RecipeSearchPage />}
+        {showHomePage && <RecipeSearchPage loggedIn={true} userId={userId}/>}
       </div>
       <Footer/>
     </div>

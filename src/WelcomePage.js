@@ -46,7 +46,7 @@ function WelcomePage({ loggedIn, setLoggedIn }) {
         <Header onRecipePageToggle={redirectRecipePage} onLoginFormToggle={redirectLoginPage} onRegisterFormToggle={redirectRegisterPage} onBackTogle={redirectHomePage} setLoggedIn={setLoggedIn} />
         <div className="WelcomePage">
           {!showLoginForm && !showRegisterForm && !showRecipePage && <WelcomePageTrue />}
-          {showRecipePage && <RecipeSearchPage />}
+          {showRecipePage && <RecipeSearchPage loggedIn={false} userId={-1}/>}
           {showLoginForm && <LoginForm setLoggedIn={setLoggedIn} setUserId={setUserId} />}
           {showRegisterForm && <RegistrationForm />}
         </div>

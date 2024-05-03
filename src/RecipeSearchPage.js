@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RecipePage from './RecipePage';
 import './RecipeSearchPage.css';
 
-const RecipeSearchPage = () => {
+const RecipeSearchPage = ({loggedIn, userId}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
@@ -44,6 +44,8 @@ const RecipeSearchPage = () => {
     setSelectedRecipeId(null);
   };
 
+  console.log('Dupa');
+  console.log(loggedIn);
   return (
     <div className="RecipeSearchPage">
       {!selectedRecipeId && (
@@ -64,7 +66,7 @@ const RecipeSearchPage = () => {
           </div>
         </>
       )}
-      {selectedRecipeId && <RecipePage recipeId={selectedRecipeId} onBackButtonClick={handleBackButtonClick} />}
+      {selectedRecipeId && <RecipePage recipeId={selectedRecipeId} onBackButtonClick={handleBackButtonClick} loggedIn={loggedIn} userId={userId}/>}
     </div>
   );
 };
