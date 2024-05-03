@@ -9,7 +9,6 @@ function LoggedInPage({ setLoggedIn, userId }) {
   const [showManagingPage, setManagingPage] = useState(false);
   const [showHomePage, setHomePage] = useState(true);
 
-  console.log(userId);
   return (
     <div>
       <LoggedInHeader onHomePageToggle={setHomePage} onManagePageToggle={setManagingPage} setLoggedIn={setLoggedIn}/>
