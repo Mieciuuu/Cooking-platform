@@ -2,13 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import './LoginRegister.css';
 
-/**
- * Handles the login process.
- * 
- * @param {Event} event - The form submission event.
- * @param {Function} setLoggedIn - State setter function to update the logged-in status.
- * @param {Function} setUserId - State setter function to update the user ID.
- */
 const handleLogin = async (event, setLoggedIn, setUserId) => {
   event.preventDefault();
   const formData = new FormData(event.target);
@@ -28,14 +21,6 @@ const handleLogin = async (event, setLoggedIn, setUserId) => {
   }
 };
 
-/**
- * Component for the login form.
- * 
- * @param {Object} props - Props object containing state setters.
- * @param {Function} props.setLoggedIn - State setter function to update the logged-in status.
- * @param {Function} props.setUserId - State setter function to update the user ID.
- * @returns {JSX.Element} Login form component.
- */
 const LoginForm = ({ setLoggedIn, setUserId }) => {
   return (
     <div>
