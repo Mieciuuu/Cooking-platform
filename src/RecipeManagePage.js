@@ -6,6 +6,7 @@ const RecipeManagePage = ({ userId }) => {
   const [userRecipes, setUserRecipes] = useState([]);
   const [addRecipe, setAddRecipe] = useState(false);
   const [modifyRecipe, setModifyRecipe] = useState(false);
+  const [recipeScore, setRecipeScore] = useState(0.0);
   const [recipeToModify, setRecipeToModify] = useState();
 
   // var modifyRecipeId = 0;
@@ -32,6 +33,12 @@ const RecipeManagePage = ({ userId }) => {
       }
       console.log(response);
       const data = await response.json();
+      const responseScore = await axios.get(`http://localhost:8080/ratings/${modifyRecipeId}`);
+      console.log(responseScore.data);
+      setRecipeScore(responseScore.data);
+      // if (!response.ok) {
+      //   throw new Error('Failed to fetch recipe');
+      // }
       // return data;
       console.log(data)
       setRecipeToModify(data.a);
@@ -108,7 +115,6 @@ const RecipeManagePage = ({ userId }) => {
   const handleInputChange = (e) => {
     console.log(e);
     const { name, value } = e.target;
-    // console.log(name,value);
     setRecipeToModify(prevState => ({
       ...prevState,
       [name]: value
@@ -142,7 +148,7 @@ const RecipeManagePage = ({ userId }) => {
             <tr><td>Nazwa przepisu:</td><td><input name='name' type='text' value={recipeToModify.name} onChange={(e) => handleInputChange(e)} /></td></tr>
             <tr><td>Składniki:</td><td><textarea name='ingredients' cols={150} rows={8} value={recipeToModify.ingredients} onChange={(e) => handleInputChange(e)} /></td></tr>
             <tr><td>Instrukcja wykonania:</td><td><textarea name='instructions' cols={150} rows={8} value={recipeToModify.instructions} onChange={(e) => handleInputChange(e)} /></td></tr>
-            <tr><td /><td><input type="submit" value="Zmień przepis" /></td></tr>
+            <tr><td>Ocena: {(recipeScore !== null && recipeScore !== 0) ? recipeScore.toFixed(2) + '/5' : 'Brak ocen'}</td><td><input type="submit" value="Zmień przepis" /></td></tr>
           </tbody>
         </form>
         <p id='confText'></p>

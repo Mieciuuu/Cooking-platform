@@ -20,6 +20,7 @@ const RecipePage = ({ recipeId, onBackButtonClick, loggedIn, userId }) => {
         // Pobierz średnią ocenę przepisu z bazy danych
         const ratingsResponse = await axios.get(`http://localhost:8080/ratings/${recipeId}`);
         if (ratingsResponse.status === 200) {
+          console.log(ratingsResponse.data);
           const averageRating = ratingsResponse.data;
           setAverageRating(averageRating);
           
