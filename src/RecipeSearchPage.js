@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RecipePage from './RecipePage';
 import './RecipeSearchPage.css';
 
-const RecipeSearchPage = ({loggedIn, userId}) => {
+const RecipeSearchPage = ({ loggedIn, userId }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
@@ -17,7 +17,6 @@ const RecipeSearchPage = ({loggedIn, userId}) => {
         }
         const data = await response.json();
         setRecipes(data);
-        console.log(data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
@@ -44,29 +43,28 @@ const RecipeSearchPage = ({loggedIn, userId}) => {
     setSelectedRecipeId(null);
   };
 
-  console.log('Dupa');
-  console.log(loggedIn);
   return (
-    <div className="RecipeSearchPage">
+    <div>
       {!selectedRecipeId && (
         <>
-          <h2>Search Recipes</h2>
+          <h2>Wyszukaj przepisy</h2>
           <input
             type="text"
-            placeholder="Search recipes..."
+            placeholder="Spaghetti..."
             value={searchQuery}
             onChange={handleSearchInputChange}
+            id='searchInput'
           />
-          <div id="recipes-list">
+          <div>
             {filteredRecipes.map(recipe => (
-              <div key={recipe.id} className="recipe">
-                <p onClick={() => goChosenRecipe(recipe.id)}>{recipe.name}</p>
+              <div key={recipe.id} onClick={() => goChosenRecipe(recipe.id)} className='recipeDiv'>
+                <p>{recipe.name}</p>
               </div>
             ))}
           </div>
         </>
       )}
-      {selectedRecipeId && <RecipePage recipeId={selectedRecipeId} onBackButtonClick={handleBackButtonClick} loggedIn={loggedIn} userId={userId}/>}
+      {selectedRecipeId && <RecipePage recipeId={selectedRecipeId} onBackButtonClick={handleBackButtonClick} loggedIn={loggedIn} userId={userId} />}
     </div>
   );
 };

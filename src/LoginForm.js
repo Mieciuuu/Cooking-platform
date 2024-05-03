@@ -1,8 +1,8 @@
 import React from 'react';
-import './LoginRegister.css';
 import axios from 'axios';
+import './LoginRegister.css';
 
-async function handleLogin(event, setLoggedIn, setUserId) {
+const handleLogin = async (event, setLoggedIn, setUserId) => {
   event.preventDefault();
   const formData = new FormData(event.target);
 
@@ -12,18 +12,16 @@ async function handleLogin(event, setLoggedIn, setUserId) {
     });
 
     document.getElementById('confirmationText').innerHTML = response.data.b;
-
     if (response.data.a > 0) {
       setUserId(response.data.a)
       setLoggedIn(true);
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
-}
+};
 
-
-function LoginForm({ setLoggedIn, setUserId }) {
+const LoginForm = ({ setLoggedIn, setUserId }) => {
   return (
     <div>
       <h1 className='formTitle'>Logowanie</h1>
@@ -45,6 +43,6 @@ function LoginForm({ setLoggedIn, setUserId }) {
       <p id='confirmationText'></p>
     </div>
   );
-}
+};
 
 export default LoginForm;

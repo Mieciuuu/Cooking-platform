@@ -9,9 +9,6 @@ const RecipeManagePage = ({ userId }) => {
   const [recipeScore, setRecipeScore] = useState(0.0);
   const [recipeToModify, setRecipeToModify] = useState();
 
-  // var modifyRecipeId = 0;
-  // var recipeToModify;
-
   const fetchUserRecipes = async () => {
     try {
       const response = await fetch(`http://localhost:8080/userRecipes/${userId}`);
@@ -28,22 +25,14 @@ const RecipeManagePage = ({ userId }) => {
   const fetchRecipe = async (modifyRecipeId) => {
     try {
       const response = await fetch(`http://localhost:8080/recipes/${modifyRecipeId}`);
-      if (!response.ok) {
+      const responseScore = await axios.get(`http://localhost:8080/ratings/${modifyRecipeId}`);
+      if (!response.ok || responseScore.status !== 200) {
         throw new Error('Failed to fetch recipe');
       }
-      console.log(response);
       const data = await response.json();
-      const responseScore = await axios.get(`http://localhost:8080/ratings/${modifyRecipeId}`);
-      console.log(responseScore.data);
       setRecipeScore(responseScore.data);
-      // if (!response.ok) {
-      //   throw new Error('Failed to fetch recipe');
-      // }
-      // return data;
-      console.log(data)
       setRecipeToModify(data.a);
       setModifyRecipe(true);
-      // return data;
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -58,11 +47,6 @@ const RecipeManagePage = ({ userId }) => {
     setModifyRecipe(false);
   }
 
-  const modifyRecipeToggle = (recipeIdToModify) => {
-    fetchRecipe(recipeIdToModify);
-    // setModifyRecipe(true);
-  }
-
   const handleRecipeAdd = async (formRequest, userId) => {
     formRequest.preventDefault()
     const formData = new FormData(formRequest.target);
@@ -75,14 +59,12 @@ const RecipeManagePage = ({ userId }) => {
 
     try {
       const response = await axios.post('http://localhost:8080/addRecipe', newRecipe);
-      console.log(response)
-      document.getElementById('confText').innerHTML = response.data;
+      document.getElementById('confText').innerHTML = "Dodano przepis '" + response.data.name + "'";
     } catch (error) {
       console.log(error);
     }
   }
 
-  // TODO MODIFY
   const handleRecipeModify = async (formRequest, recipeId) => {
     formRequest.preventDefault()
     const formData = new FormData(formRequest.target);
@@ -94,7 +76,6 @@ const RecipeManagePage = ({ userId }) => {
 
     try {
       const response = await axios.patch(`http://localhost:8080/modifyRecipe/${recipeId}`, newRecipe);
-      console.log(response)
       document.getElementById('confText').innerHTML = response.data;
     } catch (error) {
       console.log(error);
@@ -104,7 +85,6 @@ const RecipeManagePage = ({ userId }) => {
   const deleteRecipe = async (recipeIdToDelete) => {
     try {
       const response = await axios.delete(`http://localhost:8080/deleteRecipe/${recipeIdToDelete}`);
-      console.log(response)
       document.getElementById('confText').innerHTML = response.data;
       fetchUserRecipes();
     } catch (error) {
@@ -113,7 +93,6 @@ const RecipeManagePage = ({ userId }) => {
   }
 
   const handleInputChange = (e) => {
-    console.log(e);
     const { name, value } = e.target;
     setRecipeToModify(prevState => ({
       ...prevState,
@@ -124,7 +103,7 @@ const RecipeManagePage = ({ userId }) => {
   if (addRecipe) {
     return (
       <div id='ManagePage'>
-        <h2>Dodawanie przepisu</h2>
+        <h3>Dodawanie przepisu</h3>
         <p id='backButtonHolder'><button id='backButton' onClick={() => setAddRecipe(false)}>Powrót</button></p>
         <form id='addRecipeForm' onSubmit={(e) => handleRecipeAdd(e, userId)}>
           <tbody>
@@ -138,16 +117,15 @@ const RecipeManagePage = ({ userId }) => {
       </div>
     );
   } else if (modifyRecipe) {
-    console.log(recipeToModify);
     return (
       <div id='ManagePage'>
-        <h2>Modyfikacja przepisu</h2>
+        <h3>Modyfikacja przepisu</h3>
         <p id='backButtonHolder'><button id='backButton' onClick={() => setModifyRecipe(false)}>Powrót</button></p>
         <form id='addRecipeForm' onSubmit={(e) => handleRecipeModify(e, recipeToModify.id)}>
           <tbody>
             <tr><td>Nazwa przepisu:</td><td><input name='name' type='text' value={recipeToModify.name} onChange={(e) => handleInputChange(e)} /></td></tr>
-            <tr><td>Składniki:</td><td><textarea name='ingredients' cols={150} rows={8} value={recipeToModify.ingredients} onChange={(e) => handleInputChange(e)} /></td></tr>
-            <tr><td>Instrukcja wykonania:</td><td><textarea name='instructions' cols={150} rows={8} value={recipeToModify.instructions} onChange={(e) => handleInputChange(e)} /></td></tr>
+            <tr><td>Składniki:</td><td><textarea name='ingredients' cols={150} rows={7} value={recipeToModify.ingredients} onChange={(e) => handleInputChange(e)} /></td></tr>
+            <tr><td>Instrukcja wykonania:</td><td><textarea name='instructions' cols={150} rows={7} value={recipeToModify.instructions} onChange={(e) => handleInputChange(e)} /></td></tr>
             <tr><td>Ocena: {(recipeScore !== null && recipeScore !== 0) ? recipeScore.toFixed(2) + '/5' : 'Brak ocen'}</td><td><input type="submit" value="Zmień przepis" /></td></tr>
           </tbody>
         </form>
@@ -159,14 +137,13 @@ const RecipeManagePage = ({ userId }) => {
     return (
       <div id='ManagePage'>
         <p id='confText'></p>
-        <tbody>
-        <tr><button onClick={addRecipeTogle}>Dodaj przepis</button></tr>
-        {userRecipes.map(recipe => (
-          <div key={recipe.id} className="recipe">
-            <tr><td>{recipe.name}</td><td><button onClick={() => modifyRecipeToggle(recipe.id)}>Modyfikuj przepis</button></td><td><button onClick={() => deleteRecipe(recipe.id)}>Usuń przepis</button></td></tr>
-          </div>
-        ))}
-        </tbody>
+        <table><tbody>
+          <tr><td colSpan={3}><button onClick={addRecipeTogle}>Dodaj przepis</button></td></tr>
+          <br/>
+          {userRecipes.map(recipe => (
+            <tr><td>{recipe.name}</td><td><button onClick={() => fetchRecipe(recipe.id)}>Modyfikuj przepis</button></td><td><button onClick={() => deleteRecipe(recipe.id)}>Usuń przepis</button></td></tr>
+          ))}
+        </tbody></table>
       </div>
     );
   }

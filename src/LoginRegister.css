@@ -8,7 +8,7 @@
   border-style: ridge;
   margin-left: 30%;
   margin-right: 30%;
-  background-color:blueviolet;
+  background-color:gray;
 }
 
 .formTitle {
@@ -20,7 +20,7 @@
   padding: 20px;
   border-width: 5px;
   border-style: ridge;
-  background-color:blueviolet;
+  background-color:gray;
 }
 
 input {

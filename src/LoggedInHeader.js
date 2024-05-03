@@ -17,7 +17,7 @@ function LoggedInHeader({ onHomePageToggle, onManagePageToggle, setLoggedIn }) {
   };
 
   return (
-    <div className="Header">
+    <div id="Header">
       <p id='serviceName'>Let him cook - portal o gotowaniu</p>
       <button className='headerButton' id='logOutButton' onClick={logOut}>Wyloguj się</button>
       <button className='headerButton' id='recipePageManaging' onClick={redirectManagePage}>Zarządzaj moimi przepisami</button>

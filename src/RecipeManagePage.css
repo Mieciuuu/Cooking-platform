@@ -1,3 +1,11 @@
 #ManagePage {
   display: inline-block;
+  border-width: 2px;
+  border-style:groove;
+  background-color: gray;
+}
+
+td {
+  padding-left: 10px;
+  padding-right: 10px;
 }

@@ -14,28 +14,10 @@ function WelcomePage({ loggedIn, setLoggedIn }) {
   const [showRecipePage, setShowRecipePage] = useState(false);
   const [userId, setUserId] = useState();
 
-  const redirectLoginPage = () => {
-    setShowLoginForm(true);
-    setShowRegisterForm(false);
-    setShowRecipePage(false);
-  };
-
-  const redirectRegisterPage = () => {
-    setShowLoginForm(false);
-    setShowRegisterForm(true);
-    setShowRecipePage(false);
-  };
-
-  const redirectRecipePage = () => {
-    setShowLoginForm(false);
-    setShowRegisterForm(false);
-    setShowRecipePage(true);
-  };
-
-  const redirectHomePage = () => {
-    setShowLoginForm(false);
-    setShowRegisterForm(false);
-    setShowRecipePage(false);
+  const redirect = (showLoginForm, showRegisterForm, showRecipePage) => {
+    setShowLoginForm(showLoginForm);
+    setShowRegisterForm(showRegisterForm);
+    setShowRecipePage(showRecipePage);
   };
 
   if (loggedIn) {
@@ -43,9 +25,15 @@ function WelcomePage({ loggedIn, setLoggedIn }) {
   } else {
     return (
       <div>
-        <Header onRecipePageToggle={redirectRecipePage} onLoginFormToggle={redirectLoginPage} onRegisterFormToggle={redirectRegisterPage} onBackTogle={redirectHomePage} setLoggedIn={setLoggedIn} />
-        <div className="WelcomePage">
-          {!showLoginForm && !showRegisterForm && !showRecipePage && <WelcomePageTrue />}
+        <Header
+          onRecipePageToggle={() => redirect(false, false, true)}
+          onLoginFormToggle={() => redirect(true, false, false)}
+          onRegisterFormToggle={() => redirect(false, true, false)}
+          onBackTogle={() => redirect(false, false, false)}
+          setLoggedIn={setLoggedIn}
+        />
+        <div id="WelcomePage">
+          {!showLoginForm && !showRegisterForm && !showRecipePage && <FirstEntryPage />}
           {showRecipePage && <RecipeSearchPage loggedIn={false} userId={-1}/>}
           {showLoginForm && <LoginForm setLoggedIn={setLoggedIn} setUserId={setUserId} />}
           {showRegisterForm && <RegistrationForm />}
@@ -56,13 +44,13 @@ function WelcomePage({ loggedIn, setLoggedIn }) {
   }
 }
 
-function WelcomePageTrue() {
+function FirstEntryPage() {
   return (
-    <div id='frontPagePicture'>
-      <td className='frontTD'>
+    <div id='FirstEntryPage'>
+      <td>
         <img id='frontImage' src={image} alt="let him cook" />
       </td>
-      <td className='frontTD'>
+      <td>
         <p id='welcomeText'>
           Serwis "Let Him Cook" to wspaniałe miejsce do dzielenia się przepisami kuchennymi z wieloma innymi użytkownikami tego portalu.
           <br/><br/>

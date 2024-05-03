@@ -1,12 +1,15 @@
-.recipeSearchForm {
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+#searchInput {
+  width: 30%;
+  margin-bottom: 20px;
+  height: 24px;
 }
 
-#recipeSearchPage {
-  text-align: center;
-  display: block;
-}
-
-#recipeSearchContent {
-  text-align: center;
+.recipeDiv {
+  width: 30%;
+  border-width: 1px;
+  border-style:double;
+  border-width: 20%;
+  margin-left: 35%;
+  background-color: darkolivegreen;
+  height: max-content;
 }

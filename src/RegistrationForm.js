@@ -1,25 +1,28 @@
-import './LoginRegister.css';
+import React, { useState } from 'react';
 import axios from 'axios';
+import './LoginRegister.css';
 
-async function handleRegistration(d) {
-  d.preventDefault()
-  const formData = new FormData(d.target);
-  const newAppUser = {
-    email: formData.get('email'),
-    password: formData.get('password')
+const RegistrationForm = () => {
+  const [confirmationMessage, setConfirmationMessage] = useState('');
+
+  const handleRegistration = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newAppUser = {
+      email: formData.get('email'),
+      password: formData.get('password')
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8080/register', newAppUser);
+      setConfirmationMessage(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  try {
-    const response = await axios.post('http://localhost:8080/register', newAppUser);
-    document.getElementById('confirmationText').innerHTML = response.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function RegistrationForm() {
   return (
-    <div>
+    <div id='form'>
       <h1 className='formTitle'>Rejestracja</h1>
       <form className="loginRegisterForm" onSubmit={handleRegistration}>
         <table>
@@ -36,9 +39,9 @@ function RegistrationForm() {
           </tbody>
         </table>
       </form>
-      <p id='confirmationText'></p>
+      <p id='confirmationText'>{confirmationMessage}</p>
     </div>
   );
-}
+};
 
 export default RegistrationForm;
