@@ -11,7 +11,7 @@ const RecipeSearchPage = ({ loggedIn, userId }) => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch('https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/recipes');
+        const response = await fetch('https://ztiback-spring-app-20240503182447.azuremicroservices.io/recipes');
         if (!response.ok) {
           throw new Error('Failed to fetch recipes');
         }

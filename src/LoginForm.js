@@ -7,7 +7,7 @@ const handleLogin = async (event, setLoggedIn, setUserId) => {
   const formData = new FormData(event.target);
 
   try {
-    const response = await axios.get('https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/login', {
+    const response = await axios.get('https://ztiback-spring-app-20240503182447.azuremicroservices.io/login', {
       params: { email: formData.get('email'), password: formData.get('password') }
     });
 

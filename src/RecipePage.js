@@ -10,19 +10,19 @@ const RecipePage = ({ recipeId, onBackButtonClick, loggedIn, userId }) => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await fetch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/recipes/${recipeId}`);
+        const response = await fetch(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/recipes/${recipeId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch recipe');
         }
         const recipeData = await response.json();
         setRecipe(recipeData);
   
-        const ratingsResponse = await axios.get(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/ratings/${recipeId}`);
+        const ratingsResponse = await axios.get(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/ratings/${recipeId}`);
         if (ratingsResponse.status === 200) {
           setAverageRating(ratingsResponse.data);
 
           if (loggedIn) {
-            const userRatingResponse = await axios.get(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/ratings/${recipeId}/user/${userId}`);
+            const userRatingResponse = await axios.get(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/ratings/${recipeId}/user/${userId}`);
             if (userRatingResponse.status === 200) {
               setUserRating(userRatingResponse.data.ratingValue);
             }
@@ -46,9 +46,9 @@ const RecipePage = ({ recipeId, onBackButtonClick, loggedIn, userId }) => {
         userId: userId,
         ratingValue: newRating
       };
-      const response = await axios.post(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/addRating`, userScore);
+      const response = await axios.post(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/addRating`, userScore);
       if (response.status === 200) {
-        const updatedRatingsResponse = await axios.get(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/ratings/${recipeId}`);
+        const updatedRatingsResponse = await axios.get(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/ratings/${recipeId}`);
         if (updatedRatingsResponse.status === 200) {
           setAverageRating(updatedRatingsResponse.data);
         }

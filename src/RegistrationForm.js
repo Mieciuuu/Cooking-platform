@@ -14,7 +14,7 @@ const RegistrationForm = () => {
     };
 
     try {
-      const response = await axios.post('https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/register', newAppUser);
+      const response = await axios.post('https://ztiback-spring-app-20240503182447.azuremicroservices.io/register', newAppUser);
       setConfirmationMessage(response.data);
     } catch (error) {
       console.error(error);

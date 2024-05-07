@@ -11,7 +11,7 @@ const RecipeManagePage = ({ userId }) => {
 
   const fetchUserRecipes = async () => {
     try {
-      const response = await fetch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/userRecipes/${userId}`);
+      const response = await fetch(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/userRecipes/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch recipes');
       }
@@ -24,8 +24,8 @@ const RecipeManagePage = ({ userId }) => {
 
   const fetchRecipe = async (modifyRecipeId) => {
     try {
-      const response = await fetch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/recipes/${modifyRecipeId}`);
-      const responseScore = await axios.get(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/ratings/${modifyRecipeId}`);
+      const response = await fetch(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/recipes/${modifyRecipeId}`);
+      const responseScore = await axios.get(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/ratings/${modifyRecipeId}`);
       if (!response.ok || responseScore.status !== 200) {
         throw new Error('Failed to fetch recipe');
       }
@@ -58,7 +58,7 @@ const RecipeManagePage = ({ userId }) => {
     };
 
     try {
-      const response = await axios.post('https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/addRecipe', newRecipe);
+      const response = await axios.post('https://ztiback-spring-app-20240503182447.azuremicroservices.io/addRecipe', newRecipe);
       document.getElementById('confText').innerHTML = "Dodano przepis '" + response.data.name + "'";
     } catch (error) {
       console.log(error);
@@ -75,7 +75,7 @@ const RecipeManagePage = ({ userId }) => {
     };
 
     try {
-      const response = await axios.patch(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/modifyRecipe/${recipeId}`, newRecipe);
+      const response = await axios.patch(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/modifyRecipe/${recipeId}`, newRecipe);
       document.getElementById('confText').innerHTML = response.data;
     } catch (error) {
       console.log(error);
@@ -84,7 +84,7 @@ const RecipeManagePage = ({ userId }) => {
 
   const deleteRecipe = async (recipeIdToDelete) => {
     try {
-      const response = await axios.delete(`https://ztiback.test.azuremicroservices.io/spring-app-20240503182447/default/deleteRecipe/${recipeIdToDelete}`);
+      const response = await axios.delete(`https://ztiback-spring-app-20240503182447.azuremicroservices.io/deleteRecipe/${recipeIdToDelete}`);
       document.getElementById('confText').innerHTML = response.data;
       fetchUserRecipes();
     } catch (error) {
